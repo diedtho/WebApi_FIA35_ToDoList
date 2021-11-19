@@ -6,11 +6,11 @@ using WebApi_FIA35_ToDoList.Models;
 
 namespace WebApi_FIA35_ToDoList.Data
 {
-    public class MockupDataLayer : IData
+    public class MockupDAL : IData
     {
         List<ToDo> ToDoListe;
 
-        public MockupDataLayer()
+        public MockupDAL()
         {
             ToDoListe = new List<ToDo>
             {

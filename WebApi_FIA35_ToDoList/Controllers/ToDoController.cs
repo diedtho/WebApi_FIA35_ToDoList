@@ -16,9 +16,9 @@ namespace WebApi_FIA35_ToDoList.Controllers
         ToDoBusinessLayer toDoBl;
         public ToDoController()
         {
-            toDoBl = new ToDoBusinessLayer(new MockupDataLayer());
+            //toDoBl = new ToDoBusinessLayer(new MockupDataLayer());
+            toDoBl = new ToDoBusinessLayer(new SqlDAL());
         }
-
 
         [HttpGet]
         [Route("[controller]/SelectAll")]
