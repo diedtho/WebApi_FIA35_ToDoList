@@ -38,7 +38,7 @@ namespace WebApi_FIA35_ToDoList.AccessLayers
             return false;
         }
 
-        public bool InsertToDo(ToDo todo)
+        public int InsertToDo(ToDo todo)
         {
             // 1. DB-Verbindung konfigurieren
             // "./" ist das Wurzelverzeichnis der Anwendung
@@ -46,7 +46,7 @@ namespace WebApi_FIA35_ToDoList.AccessLayers
 
             // 2. SQL-Kommando festlegen
             SqliteCommand InsertCmd = new SqliteCommand($"Insert INTO ToDoListe ('Enddatum', 'Taetigkeit', 'Prioritaet', 'IstFertig')" +
-                $" VALUES (@Enddatum,@Taetigkeit,@Prioritaet,@IstFertig);", conn);
+                $" VALUES (@Enddatum,@Taetigkeit,@Prioritaet,@IstFertig);SELECT last_insert_rowid() FROM ToDoListe;", conn);
             InsertCmd.Parameters.AddWithValue("@Enddatum", todo.Enddatum);
             InsertCmd.Parameters.AddWithValue("@Taetigkeit", todo.Taetigkeit);
             InsertCmd.Parameters.AddWithValue("@Prioritaet", todo.Prioritaet);
@@ -56,15 +56,12 @@ namespace WebApi_FIA35_ToDoList.AccessLayers
             conn.Open();
 
             // 4. Datensatz einfügen
-            int Anz = InsertCmd.ExecuteNonQuery();
+            int lastId = (int)(long)InsertCmd.ExecuteScalar();
 
             // 5. Datenverbindung schließen
             conn.Close();
-
-            if (Anz > 0)
-                return true;
-
-            return false;
+            
+            return lastId; // "last_insert_rowid()" gibt die zuletzt erzeugte TDId zurück
         }
 
         public List<ToDo> SelectAllToDo()
@@ -180,6 +177,7 @@ namespace WebApi_FIA35_ToDoList.AccessLayers
                 return true;
 
             return false;
+
         }
     }
 }

@@ -26,7 +26,7 @@ namespace WebApi_FIA35_ToDoList.AccessLayers
             return DataAccess.SelectToDoById(Id);
         }
 
-        public bool AddToDo(ToDo toDo)
+        public int AddToDo(ToDo toDo)
         {
             return DataAccess.InsertToDo(toDo);
         }

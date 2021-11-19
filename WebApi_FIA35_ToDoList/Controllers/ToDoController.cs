@@ -36,7 +36,7 @@ namespace WebApi_FIA35_ToDoList.Controllers
 
         [HttpPost]
         [Route("[controller]/Add")]
-        public bool AddToDo(ToDo toDo)
+        public int AddToDo(ToDo toDo)
         {
             return toDoBl.AddToDo(toDo);
         }

@@ -7,7 +7,7 @@ namespace WebApi_FIA35_ToDoList.Interfaces
     {
         public List<ToDo> SelectAllToDo();
         public ToDo SelectToDoById(int Id);
-        public bool InsertToDo(ToDo todo);
+        public int InsertToDo(ToDo todo);
         public bool UpdateToDo(ToDo todo);
         public bool DeleteToDo(ToDo todo);
 

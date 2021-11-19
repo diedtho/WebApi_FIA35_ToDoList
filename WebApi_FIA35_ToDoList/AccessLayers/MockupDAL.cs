@@ -27,11 +27,11 @@ namespace WebApi_FIA35_ToDoList.Data
             return true;
         }
 
-        public bool InsertToDo(ToDo todo)
+        public int InsertToDo(ToDo todo)
         {
             ToDoListe.Add(todo);
 
-            return true;
+            return 1;
         }
 
         public List<ToDo> SelectAllToDo()
