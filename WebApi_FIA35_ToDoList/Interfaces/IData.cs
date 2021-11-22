@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WebApi_FIA35_ToDoList.Models;
 
 namespace WebApi_FIA35_ToDoList.Interfaces
@@ -10,6 +11,9 @@ namespace WebApi_FIA35_ToDoList.Interfaces
         public int InsertToDo(ToDo todo);
         public bool UpdateToDo(ToDo todo);
         public bool DeleteToDo(ToDo todo);
+
+        public List<ToDo> SelectToDoByDate (DateTime start, DateTime end);
+        public List<ToDo> SelectToDoBySubject (string searchString);
 
     }
 }

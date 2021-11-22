@@ -104,6 +104,47 @@ namespace WebApi_FIA35_ToDoList.AccessLayers
 
         }
 
+        public List<ToDo> SelectToDoByDate(DateTime start, DateTime end)
+        {
+            // 1. DB-Verbindung konfigurieren
+            // "./" ist das Wurzelverzeichnis der Anwendung
+            SqliteConnection conn = new SqliteConnection("Data Source=./Data/ToDoListe.db;");
+
+            // 2. SQL-Kommando festlegen
+            SqliteCommand SelectCmd = new SqliteCommand("Select * FROM ToDoListe WHERE Enddatum > @start AND Enddatum < @end;", conn);
+            SelectCmd.Parameters.AddWithValue("@start", start.ToShortDateString());
+            SelectCmd.Parameters.AddWithValue("@end", end.ToShortDateString());
+
+            // 3. Datenbankverbindung öffnen
+            conn.Open();
+
+            // 4. SQL-Statement gegen die Datenbank ausführen
+            // Execute.NonQuery -> bei Insert, Update, Delete (gibt die Anzahl der betroffenen Zeilen zurück)
+            // Execute.Scalar -> bei Select mit Aggregatsfunktion (liefert 1. Zeile, 1. Spalte)
+            // Execute.Reader -> bei Select mit mehreren Zeilen und/oder mehreren Spalten
+
+            SqliteDataReader dr = SelectCmd.ExecuteReader();
+
+            List<ToDo> ToDoListe = new List<ToDo>();
+            while (dr.Read() == true)
+            {
+                ToDo toDo = new ToDo
+                {
+                    TDId = (int)(long)dr[0],
+                    Enddatum = DateTime.Parse(dr["Enddatum"].ToString()),
+                    Taetigkeit = dr["Taetigkeit"].ToString(),
+                    Prioritaet = (int)(long)dr[3],
+                    IstFertig = (int)(long)dr[4] == 0 ? false : true
+                };
+                ToDoListe.Add(toDo);
+            }
+
+            // 5. Datenbank schließem
+            conn.Close();
+
+            return ToDoListe;
+        }
+
         public ToDo SelectToDoById(int Id)
         {
             // 1. DB-Verbindung konfigurieren
@@ -141,6 +182,47 @@ namespace WebApi_FIA35_ToDoList.AccessLayers
             conn.Close();
 
             return toDo;
+        }
+
+        public List<ToDo> SelectToDoBySubject(string searchString)
+        {
+            // 1. DB-Verbindung konfigurieren
+            // "./" ist das Wurzelverzeichnis der Anwendung
+            SqliteConnection conn = new SqliteConnection("Data Source=./Data/ToDoListe.db;");
+
+            // 2. SQL-Kommando festlegen
+            SqliteCommand SelectCmd = new SqliteCommand("Select * FROM ToDoListe WHERE Taetigkeit Like '%'||@searchString||'%';", conn);
+            SelectCmd.Parameters.AddWithValue("@searchString", searchString);
+            
+
+            // 3. Datenbankverbindung öffnen
+            conn.Open();
+
+            // 4. SQL-Statement gegen die Datenbank ausführen
+            // Execute.NonQuery -> bei Insert, Update, Delete (gibt die Anzahl der betroffenen Zeilen zurück)
+            // Execute.Scalar -> bei Select mit Aggregatsfunktion (liefert 1. Zeile, 1. Spalte)
+            // Execute.Reader -> bei Select mit mehreren Zeilen und/oder mehreren Spalten
+
+            SqliteDataReader dr = SelectCmd.ExecuteReader();
+
+            List<ToDo> ToDoListe = new List<ToDo>();
+            while (dr.Read() == true)
+            {
+                ToDo toDo = new ToDo
+                {
+                    TDId = (int)(long)dr[0],
+                    Enddatum = DateTime.Parse(dr["Enddatum"].ToString()),
+                    Taetigkeit = dr["Taetigkeit"].ToString(),
+                    Prioritaet = (int)(long)dr[3],
+                    IstFertig = (int)(long)dr[4] == 0 ? false : true
+                };
+                ToDoListe.Add(toDo);
+            }
+
+            // 5. Datenbank schließem
+            conn.Close();
+
+            return ToDoListe;
         }
 
         public bool UpdateToDo(ToDo todo)

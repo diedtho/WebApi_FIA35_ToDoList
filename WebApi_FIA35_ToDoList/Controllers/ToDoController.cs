@@ -34,6 +34,31 @@ namespace WebApi_FIA35_ToDoList.Controllers
             return toDoBl.GetToDoById(Id);
         }
 
+        [HttpGet]
+        [Route("[controller]/SelectByDate")]
+        public List<ToDo> GetToDoByDate(DateTime start, DateTime end)
+        {
+            List<ToDo> ToDoListe = toDoBl.GetAllToDo();
+            return ToDoListe.FindAll(p => p.Enddatum > start && p.Enddatum < end);
+
+        }
+
+        [HttpGet]
+        [Route("[controller]/SelectBySubject")]
+        public List<ToDo> GetToDoBySubject(string searchString)
+        {
+            List<ToDo> ToDoListe = toDoBl.GetAllToDo();
+            return ToDoListe.FindAll(p => p.Taetigkeit.Contains(searchString));
+        }
+
+        [HttpGet]
+        [Route("[controller]/SelectByProcess")]
+        public List<ToDo> GetToDoByProcess()
+        {
+            List<ToDo> ToDoListe = toDoBl.GetAllToDo();
+            return ToDoListe.FindAll(p => p.IstFertig == true);
+        }
+
         [HttpPost]
         [Route("[controller]/Add")]
         public int AddToDo(ToDo toDo)

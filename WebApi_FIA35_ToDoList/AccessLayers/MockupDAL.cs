@@ -39,9 +39,19 @@ namespace WebApi_FIA35_ToDoList.Data
             return ToDoListe;            
         }
 
+        public List<ToDo> SelectToDoByDate(DateTime start, DateTime end)
+        {
+            return ToDoListe.FindAll(p => p.Enddatum > start && p.Enddatum < end);
+        }
+
         public ToDo SelectToDoById(int Id)
         {
             return ToDoListe.FirstOrDefault(td => td.TDId == Id);
+        }
+
+        public List<ToDo> SelectToDoBySubject(string searchString)
+        {            
+            return ToDoListe.FindAll(p => p.Taetigkeit.Contains("searchString"));            
         }
 
         public bool UpdateToDo(ToDo todo)

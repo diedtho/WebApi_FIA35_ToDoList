@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WebApi_FIA35_ToDoList.Interfaces;
 using WebApi_FIA35_ToDoList.Models;
 
@@ -19,6 +20,16 @@ namespace WebApi_FIA35_ToDoList.AccessLayers
         public List<ToDo> GetAllToDo()
         {
             return DataAccess.SelectAllToDo();
+        }
+
+        public List<ToDo> GetByDate(DateTime start, DateTime end)
+        {
+            return DataAccess.SelectToDoByDate(start, end);
+        }
+
+        public List<ToDo> GetBySubject(string searchString)
+        {
+            return DataAccess.SelectToDoBySubject(searchString);
         }
 
         public ToDo GetToDoById(int Id)
